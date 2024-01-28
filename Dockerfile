@@ -18,6 +18,10 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libc6-dev
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y unrar tcpdump wget
 
+RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libc6-dev libicu-dev
+
+RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libxml2-dev
+
 # create inetsys user
 RUN groupadd -r inetsys && useradd -m -d /home/inetsys -g inetsys inetsys
 
@@ -33,6 +37,9 @@ WORKDIR /home/inetsys/ns3_env
 
 # Configurar o brite
 RUN hg clone http://code.nsnam.org/BRITE && cd BRITE && make
+
+# Configurar o openflow
+RUN hg clone http://code.nsnam.org/openflow && cd openflow && ./waf configure && ./waf build
 
 RUN git clone https://gitlab.com/nsnam/ns-3-dev.git
 
@@ -50,7 +57,7 @@ RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
 # Fazendo configure
 
-RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --build-profile=debug --enable-examples --enable-tests 
+RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
 
