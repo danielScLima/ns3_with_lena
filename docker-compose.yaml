@@ -1,0 +1,7 @@
+version: '3'
+services:
+  ns3:
+    build: .
+    container_name: ns3
+    hostname: ns3
+    tty: true
