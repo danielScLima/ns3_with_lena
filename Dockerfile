@@ -24,6 +24,8 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 l
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libxml2-dev libboost-all-dev
 
+RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y openmpi-bin openmpi-common openmpi-doc libopenmpi-dev
+
 # create inetsys user
 RUN groupadd -r inetsys && useradd -m -d /home/inetsys -g inetsys inetsys
 
@@ -43,6 +45,9 @@ RUN hg clone http://code.nsnam.org/BRITE && cd BRITE && make
 # Configurar o openflow
 RUN hg clone http://code.nsnam.org/openflow && cd openflow && ./waf configure && ./waf build
 
+# Configurar click
+RUN git clone https://github.com/kohler/click && cd click/ && ./configure --disable-linuxmodule --enable-nsclick --enable-wifi && make
+
 RUN git clone https://gitlab.com/nsnam/ns-3-dev.git
 
 # Altero o branch do ns3
@@ -59,7 +64,7 @@ RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
 # Fazendo configure
 
-RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
+RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --with-nsclick=/home/inetsys/ns3_env/click/source --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
 
