@@ -1,5 +1,5 @@
-# FROM ubuntu:22.04
-FROM ubuntu:20.04
+FROM ubuntu:22.04
+#FROM ubuntu:20.04
 
 LABEL "inetsys.team" = "ns3_3.40.1 image" \
     version = "1.0" \
@@ -64,7 +64,8 @@ RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
 # Fazendo configure
 
-RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --with-nsclick=/home/inetsys/ns3_env/click/source --build-profile=debug --enable-examples --enable-tests 
+#RUN cd ns-3-dev/ && ./ns3 configure --with-nsclick=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
+RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
 
