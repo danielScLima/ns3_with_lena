@@ -1,4 +1,6 @@
-FROM ubuntu:22.04
+# FROM ubuntu:22.04
+FROM ubuntu:20.04
+
 LABEL "inetsys.team" = "ns3_3.40.1 image" \
     version = "1.0" \
     description = "Base docker image of ns3 3.40.1 with Ubuntu 22.04 LTS" \
@@ -20,7 +22,7 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y unrar tcp
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libc6-dev libicu-dev
 
-RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libxml2-dev
+RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libxml2-dev libboost-all-dev
 
 # create inetsys user
 RUN groupadd -r inetsys && useradd -m -d /home/inetsys -g inetsys inetsys
