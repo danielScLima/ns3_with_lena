@@ -39,6 +39,9 @@ WORKDIR /home/inetsys/ns3_env
 # brite                     click                     mpi                       
 # nr-u                      openflow                  visualizer 
 
+# Modules that cannot be built:
+# mpi                       nr-u                      visualizer 
+
 # Configurar o brite
 RUN hg clone http://code.nsnam.org/BRITE && cd BRITE && make
 
@@ -64,8 +67,7 @@ RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
 # Fazendo configure
 
-RUN cd ns-3-dev/ && ./ns3 configure --with-click=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
-# RUN cd ns-3-dev/ && ./ns3 configure --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
+RUN cd ns-3-dev/ && ./ns3 configure --enable-mpi --with-click=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
 
