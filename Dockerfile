@@ -14,7 +14,7 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y build-ess
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y gcc g++ cmake ninja-build git vim mercurial
 
-RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y python3 python-setuptools python3-pip
+RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y python3 python3-dev python-setuptools python3-pip
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libc6-dev sqlite sqlite3 libsqlite3-dev
 
@@ -25,6 +25,10 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 l
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y libxml2 libxml2-dev libboost-all-dev
 
 RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y openmpi-bin openmpi-common openmpi-doc libopenmpi-dev
+
+# RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y bzr
+
+RUN pip install -v cppyy
 
 # create inetsys user
 RUN groupadd -r inetsys && useradd -m -d /home/inetsys -g inetsys inetsys
@@ -41,6 +45,9 @@ WORKDIR /home/inetsys/ns3_env
 
 # Modules that cannot be built:
 # mpi                       nr-u                      visualizer 
+
+# Modules that cannot be built:
+# nr-u                      visualizer 
 
 # Configurar o brite
 RUN hg clone http://code.nsnam.org/BRITE && cd BRITE && make
@@ -67,7 +74,7 @@ RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
 # Fazendo configure
 
-RUN cd ns-3-dev/ && ./ns3 configure --enable-mpi --with-click=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
+RUN cd ns-3-dev/ && ./ns3 configure --enable-python-bindings --enable-mpi --with-click=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
 
