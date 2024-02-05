@@ -30,6 +30,14 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=America/Fortaleza apt install -y openmpi-b
 
 RUN pip install -v cppyy
 
+RUN apt update
+
+RUN apt install -y libeigen3-dev
+RUN apt install -y libgsl-dev
+
+#Aprox 300 MB
+RUN apt install -y libgtk-3-dev
+
 # create inetsys user
 RUN groupadd -r inetsys && useradd -m -d /home/inetsys -g inetsys inetsys
 
@@ -72,8 +80,16 @@ RUN cd ns-3-dev/contrib/nr && git checkout 5g-lena-v2.6.y
 
 RUN cd ns-3-dev/contrib && git clone https://gitlab.com/cttc-lena/nr-u.git
 
+# netmap
+# no docker não está instável
+# RUN git clone https://github.com/luigirizzo/netmap
+# RUN cd netmap && ./configure --kernel-sources=/usr/src/linux-headers-5.15.0-91-generic && make && make install
+
+
 # Fazendo configure
 
+# build-profile: debug ou optimized
+# RUN cd ns-3-dev/ && ./ns3 configure --build-profile=debug --enable-examples --enable-tests 
 RUN cd ns-3-dev/ && ./ns3 configure --enable-python-bindings --enable-mpi --with-click=/home/inetsys/ns3_env/click --with-brite=/home/inetsys/ns3_env/BRITE --with-openflow=/home/inetsys/ns3_env/openflow --build-profile=debug --enable-examples --enable-tests 
 
 RUN cd ns-3-dev/ && ./ns3 build
